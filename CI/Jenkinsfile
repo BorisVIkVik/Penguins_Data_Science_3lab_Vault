@@ -36,8 +36,7 @@ pipeline {
                             DB_PSW=$VAULT_CREDS_PSW
                             EOF
                         '''
-                        sh 'export DB_PSW=$VAULT_CREDS_PSW'
-                        sh 'echo $DB_PSW'
+                        sh 'export DB_PSW=$VAULT_CREDS_PSW && echo $DB_PSW'
                         sh 'docker compose build'
                         sh 'docker tag borisvikvik/borisvikvik-penguins-data-science:latest borisvikvik/borisvikvik-penguins-data-science:3_lab'
                         
