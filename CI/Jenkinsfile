@@ -3,6 +3,7 @@ pipeline {
     environment {
         PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:$PATH"
         DOCKERHUB_CREDS = credentials('Penguins-data-science')
+        VAULT_CREDS = credentials('Penguins-data-science-vault')
     }
     stages {
         stage('Clone github repository') {
@@ -25,7 +26,7 @@ pipeline {
 
         stage('Checkout repo dir') {
             steps {
-                sh 'cd Pinguins_Data_Science && ls'
+                sh 'ls'
 				}
 			}
         stage('Login'){
@@ -39,12 +40,16 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh 'cd Pinguins_Data_Science && docker compose build'
+                        sh '''
+                            cat > .env << EOF
+                            DB_PSW=$VAULT_CREDS_PSW
+                            EOF
+                        '''
+                        sh 'docker compose build' // --secret id=password_db, env=$VAULT_CREDS_PSW --secret id=vault_password_db, env=$VAULT_CREDS_PSW'
                         }
 
                     finally {
                     sh '''
-                        cd Pinguins_Data_Science
                         docker compose up -d
                         '''
                         }

@@ -1,7 +1,9 @@
 import uuid
+import hvac
 from fastapi import FastAPI, Body, status, Form
 from fastapi.responses import JSONResponse, FileResponse
 from test_predict import Predictor
+from test_logger import Logger
 from pydantic import BaseModel
 from typing import Annotated
 class PinguinSchema(BaseModel):
@@ -12,13 +14,29 @@ class PinguinSchema(BaseModel):
     Delta15N: int 
     Delta13C: int 
  
-# условная база данных - набор объектов Person
+
+# config = configparser.ConfigParser()
+logger = Logger(True)
+log = logger.get_logger(__name__)
+
+client = hvac.Client(
+    url='http://vault:8200',
+    token='testtoken',
+)
+
+
+read_response = client.secrets.kv.read_secret_version(path='my-secret-password')
+
+password = read_response['data']['data']['password']
+# print(password)
+log.info(password)
+
 import psycopg2
-#asdas
+
 conn =psycopg2.connect(
     dbname='penguinsDB',
     user='myuser',
-    password='mypassword',
+    password=password,
     host='db',
     port='5432'
 )

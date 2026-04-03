@@ -8,3 +8,4 @@ seaborn
 fastapi[standard]
 uvicorn
 psycopg2-binary
+hvac
