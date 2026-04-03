@@ -3,6 +3,7 @@ pipeline{
     environment{
         PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:$PATH"
         DOCKERHUB_CREDS = credentials('Penguins-data-science')
+        VAULT_CREDS = credentials('Penguins-data-science-vault')
     }
     stages{
         stage('Login'){
@@ -18,7 +19,9 @@ pipeline{
         }
         stage('Run container'){
             steps{
-                sh 'docker compose up'
+                withEnv(["DB_PSW=${VAULT_CREDS_PSW}"]) {
+                    sh 'docker compose up'
+                }
                 // sh 'docker run --name penguins-data-science -p 8080:5556'
             }
         }

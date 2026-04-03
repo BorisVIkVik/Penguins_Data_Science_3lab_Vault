@@ -1,45 +1,29 @@
 services:
   vault:
     image: hashicorp/vault:latest
-    # build:
-    #   args:
-    #       - vault_password_db=${vault_password_db}
     environment:
       VAULT_DEV_ROOT_TOKEN_ID: testtoken
     ports:
       - 8200:8200
     privileged: true
-    # command:  bash -c 'curl --header "X-Vault-Token: testtoken" --header "Content-Type: application/json" --request POST --data '{"data": {"password": /run/secrets/vault_password_db}}' http://vault:8200/v1/secret/data/my-secret-password'
   db:
     image: postgres
     restart: always
     shm_size: 128mb
-    # env_file: .env
-    # secrets:
-    #     - password_db
     environment:
-      POSTGRES_USER: myuser
+      POSTGRES_USER: myuser1
       POSTGRES_PASSWORD: ${DB_PSW}
-      # /run/secrets/password_db
       POSTGRES_DB: penguinsDB
     ports:
       - 5432:5432
-    # volumes:
-    #   - ./db-data/:/var/lib/postgresql/data/
   web:
     build: .
-    # command: bash -c "dvc pull && python src/preprocess.py && python src/train.py && python src/predict.py -m SVM -t func && coverage run src/unit_tests/test_preprocess.py && coverage run -a src/unit_tests/test_training.py && coverage report -m && fastapi dev src/api/api.py --host 0.0.0.0 --port 8000"
     command: bash -c "python src/api/test_vault.py && fastapi dev src/api/api.py --host 0.0.0.0 --port 8000"
     ports:
       - 8000:8000
     image: borisvikvik/borisvikvik-penguins-data-science:latest
-    # platform: linux/amd64
   adminer:
     image: adminer
     restart: always
     ports:
       - 8081:8080
-  # web:
-  #   ports: 
-  #     - 8000:8001
-  #   image: borisvikvik/borisvikvik-penguins-data-science:latest
