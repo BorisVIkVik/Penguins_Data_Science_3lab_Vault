@@ -1,26 +1,17 @@
 pipeline {
     agent any
     environment {
-        PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:$PATH"
+        PATH = "/Library/Frameworks/Python.framework/Versions/3.12/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:$PATH"
         DOCKERHUB_CREDS = credentials('Penguins-data-science')
         VAULT_CREDS = credentials('Penguins-data-science-vault')
     }
     stages {
         stage('Clone github repository') {
             steps {
-                // cleanWs()
-                
-                sh '''
-                    DIR="./Pinguins_Data_Science"
-                    if [[ -d "$DIR" ]]; then
-                        echo "Directory $DIR exists."
-                    else
-                        echo "Directory $DIR does not exist."
-                        git clone -b main https://github.com/BorisVIkVik/Pinguins_Data_Science
-                    fi
-                    dvc pull
-                '''
-                // sh 'cd Pinguins_Data_Science && dvcpull'
+                    sh  '''
+                            cat .dvc/config
+                            dvc pull
+                        '''
 				}
 			}
 
