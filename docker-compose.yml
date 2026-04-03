@@ -14,12 +14,12 @@ services:
     image: postgres
     restart: always
     shm_size: 128mb
-    env_file: .env
+    # env_file: .env
     # secrets:
     #     - password_db
     environment:
       POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: $VAULT_CREDS_PSW
+      POSTGRES_PASSWORD: $DB_PSW
       # /run/secrets/password_db
       POSTGRES_DB: penguinsDB
     ports:
