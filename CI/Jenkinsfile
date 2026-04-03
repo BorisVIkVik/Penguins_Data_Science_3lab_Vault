@@ -1,0 +1,68 @@
+pipeline {
+    agent any
+    environment {
+        PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:$PATH"
+        DOCKERHUB_CREDS = credentials('Penguins-data-science')
+    }
+    stages {
+        stage('Clone github repository') {
+            steps {
+                // cleanWs()
+                
+                sh '''
+                    DIR="./Pinguins_Data_Science"
+                    if [[ -d "$DIR" ]]; then
+                        echo "Directory $DIR exists."
+                    else
+                        echo "Directory $DIR does not exist."
+                        git clone -b main https://github.com/BorisVIkVik/Pinguins_Data_Science
+                    fi
+                    dvc pull
+                '''
+                // sh 'cd Pinguins_Data_Science && dvcpull'
+				}
+			}
+
+        stage('Checkout repo dir') {
+            steps {
+                sh 'cd Pinguins_Data_Science && ls'
+				}
+			}
+        stage('Login'){
+            steps{
+                // sh 'source .env'
+                sh 'docker login -u $DOCKERHUB_CREDS_USR -p $DOCKERHUB_CREDS_PSW'
+                }
+            }
+
+        stage('Create and run docker container') {
+            steps {
+                script {
+                    try {
+                        sh 'cd Pinguins_Data_Science && docker compose build'
+                        }
+
+                    finally {
+                    sh '''
+                        cd Pinguins_Data_Science
+                        docker compose up -d
+                        '''
+                        }
+				    }
+                }
+            }
+        stage('Push')
+        {
+            steps{
+                sh 'docker push borisvikvik/borisvikvik-penguins-data-science:latest'
+            }
+        }
+        
+    }
+    post{
+        always{
+            sh 'docker logout'
+        }
+    }
+
+}

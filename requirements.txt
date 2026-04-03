@@ -1,0 +1,10 @@
+coverage
+dvc
+numpy
+pandas
+scikit-learn
+pyyaml
+seaborn
+fastapi[standard]
+uvicorn
+psycopg2-binary

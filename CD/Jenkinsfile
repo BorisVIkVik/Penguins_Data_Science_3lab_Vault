@@ -1,0 +1,31 @@
+pipeline{
+    agent any
+    environment{
+        PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:$PATH"
+        DOCKERHUB_CREDS = credentials('Penguins-data-science')
+    }
+    stages{
+        stage('Login'){
+            steps{
+                // sh 'source .env'
+                sh 'docker login -u $DOCKERHUB_CREDS_USR -p $DOCKERHUB_CREDS_PSW'
+                }
+        }
+        stage('Pull image'){
+            steps{
+                sh 'docker pull borisvikvik/borisvikvik-penguins-data-science'
+            }
+        }
+        stage('Run container'){
+            steps{
+                sh 'docker compose up'
+                // sh 'docker run --name penguins-data-science -p 8080:5556'
+            }
+        }
+    }
+    post{
+        always{
+            sh 'docker stop penguins-data-science '
+        }
+    }
+}
