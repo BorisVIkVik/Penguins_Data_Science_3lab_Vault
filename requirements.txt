@@ -9,3 +9,4 @@ fastapi[standard]
 uvicorn
 psycopg2-binary
 hvac
+python-dotenv

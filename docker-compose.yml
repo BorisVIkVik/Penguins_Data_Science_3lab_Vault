@@ -28,7 +28,7 @@ services:
   web:
     build: .
     # command: bash -c "dvc pull && python src/preprocess.py && python src/train.py && python src/predict.py -m SVM -t func && coverage run src/unit_tests/test_preprocess.py && coverage run -a src/unit_tests/test_training.py && coverage report -m && fastapi dev src/api/api.py --host 0.0.0.0 --port 8000"
-    command: bash -c "dvc pull && python src/api/test_vault.py && fastapi dev src/api/api.py --host 0.0.0.0 --port 8000"
+    command: bash -c "python src/api/test_vault.py && fastapi dev src/api/api.py --host 0.0.0.0 --port 8000"
     ports:
       - 8000:8000
     image: borisvikvik/borisvikvik-penguins-data-science:latest
