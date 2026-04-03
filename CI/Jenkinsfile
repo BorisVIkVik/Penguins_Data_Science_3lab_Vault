@@ -36,7 +36,9 @@ pipeline {
                             DB_PSW=$VAULT_CREDS_PSW
                             EOF
                         '''
-                        sh 'docker compose build -t 3_lab' // --secret id=password_db, env=$VAULT_CREDS_PSW --secret id=vault_password_db, env=$VAULT_CREDS_PSW'
+                        sh 'docker compose build'
+                        sh 'docker tag borisvikvik/borisvikvik-penguins-data-science:3_lab'
+                        
                         }
 
                     finally {
