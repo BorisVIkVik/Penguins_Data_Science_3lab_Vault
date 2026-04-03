@@ -37,7 +37,7 @@ pipeline {
                             EOF
                         '''
                         sh 'docker compose build'
-                        sh 'docker tag borisvikvik/borisvikvik-penguins-data-science:3_lab'
+                        sh 'docker tag borisvikvik/borisvikvik-penguins-data-science:latest borisvikvik/borisvikvik-penguins-data-science:3_lab'
                         
                         }
 
