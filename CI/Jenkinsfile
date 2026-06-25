@@ -62,7 +62,7 @@ pipeline {
     }
     post{
         always{
-            sh 'docker logout'
+            sh 'ls && docker compose stop && docker logout'
         }
     }
 
