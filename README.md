@@ -1,4 +1,4 @@
-# Викторов Борис Лабораторная 2.
+# Викторов Борис Лабораторная 3.
 
 ## Данные: Palmer Archipelago (Antarctica) penguin data
 
@@ -14,7 +14,7 @@
 ├── experiments
 │   └── exp_test_0_2026_03_06_18_00_59
 ├── git@github.com:BorisVIkVik
-│   └── Pinguins_Data_Science.git
+│   └── Penguins_Data_Science_3lab_Vault.git
 │       └── files
 │           └── md5
 │               └── 97
@@ -23,6 +23,7 @@
 │   ├── __pycache__
 │   ├── api
 │   │   └── __pycache__
+│   ├── db
 │   └── unit_tests
 └── tests
 
